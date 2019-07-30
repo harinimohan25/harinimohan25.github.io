@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Singapore Population Analysis</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+.sansserif {
+	font-family: Verdana, sans-serif;
+}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.rectangle {
+	fill: steelblue;
+}
+.rectangle:hover {
+	fill: orange;
+}
+.axis {
+  font: 10px Verdana;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+  
+}
+
+.footer {
+	background-color: white;
+	font-size: 12px;
+}
+
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+  
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+  
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+</style>
+  
+</head>
+<body>
+<div class = "row sansserif">
+<center><h2 class="sansserif"> Singapore Population Analysis</h2></center>
+ </div>
+ <div class="container sansserif">
+	<div class="pagination">
+	  <a href="#">&laquo;</a>
+	  <a href="index.html">Home</a>
+	  <a href="sex_ratio.html"class="active">Male vs Female Ratio</a>
+	  <a href="ethnic_growth.html">Ethnicity Growth</a>
+	  <a href="age_group.html">Ethnicity vs Age Group</a>
+	  <a href="#">&raquo;</a>
+	</div>
+<div class = "row"></div>
+<br/>
+<div class ="rows">
+	<div class = "col-sm-3 sansserif" style="background-color:#eee;">
+	From the years 1970 till 2015, the population growth between Male and Female ratio in Singapore.<br>
+	<br></br>	
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	</div>
+	<div class = "col-sm-9 sansserif" style="background-color:white;" id="ratio">
+	<center><u><b>Male vs Female Population Comparison in Singapore</b></u></center>
+	<div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>
+	</div>
+</div>
+<div class = "row sansserif">
+</div>
+<br></br>
+<br>
+<hr>
+<div class="footer">
+	<p class="sansserif">By. Harini MohanaSundaram for Data Visualization Exercise</p>
+</div>
+</div>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script>
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    width = 700 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#ratio")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+//Read the data
+d3.csv("singapore-sex-ratio.csv", function(data) {
+
+	bisectDate = d3.bisector(function(d) { return d.year; }).left;
+    var allGroup = d3.nest()	
+					  .key(function(d) { return d.level_1;})
+					  .entries(data);
+	
+	console.log(allGroup)
+	
+  // Add X axis --> it is a date format
+  var x = d3.scaleLinear()
+    .domain(d3.extent(data, function(d) { return d.year; }))
+    .range([ 0, width ]);
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).ticks(10));
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, d3.max(data, function(d) { return +d.value; })])
+    .range([ height, 0 ]);
+	
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+  // color palette
+  var res = allGroup.map(function(d){ return d.key }) // list of group names
+  var color = d3.scaleOrdinal()
+    .domain(res)
+    .range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'])
+
+  // Draw the line
+  svg.selectAll(".line")
+      .data(allGroup)
+      .enter()
+      .append("path")
+        .attr("fill", "none")
+        .attr("stroke", function(d){ return color(d.key) })
+        .attr("stroke-width", 1.5)
+        .attr("d", function(d){
+          return d3.line()
+            .x(function(d) { return x(d.year); })
+            .y(function(d) { return y(+d.value); })
+            (d.values)
+        })
+  
+	const tooltip = d3.select('#tooltip');
+	const tooltipLine = svg.append('line');
+ 
+	function removeTooltip() {
+		if (tooltip) tooltip.style('display', 'none');
+		if (tooltipLine) tooltipLine.attr('stroke', 'none');
+	}
+
+	function drawTooltip() {
+		const year = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
+ 
+		tooltipLine.attr('stroke', 'black')
+		.attr('x1', x(year))
+		.attr('x2', x(year))
+		.attr('y1', 0)
+		.attr('y2', height);
+  
+	  tooltip.html(year)
+		.style('display', 'block')
+		.style('left', d3.event.pageX + 20)
+		.style('top', d3.event.pageY - 20)
+		.selectAll()
+		.data(allGroup)
+		.enter()
+		.append('div')
+		.style('color', d => color(d.key))
+		.html(d => d.level_1 + ': ' + d.value);
+	}
+ 
+   tipBox = svg.append('rect')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('opacity', 0)
+    .on('mousemove', drawTooltip)
+    .on('mouseout', removeTooltip);
+})
+
+
+
+</script>
+</body>
+</html>

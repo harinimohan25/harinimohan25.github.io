@@ -1,7 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<title>Singapore Population Analysis</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+.sansserif {
+	font-family: Verdana, sans-serif;
+}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.navbar {
+    background-color: #F8F8F8;
+    color: #E7E7E7;
+}
+
+.rectangle {
+	fill: steelblue;
+}
+.rectangle:hover {
+	fill: orange;
+}
+.axis {
+  font: 10px Verdana;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+  
+}
+
+.footer {
+	background-color: white;
+	font-size: 12px;
+}
+</style>
+  
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+<div class = "row sansserif">
+<center><h2 class="sansserif"> Singapore Population Analysis</h2></center>
+ </div>
+   <div class="container sansserif">
+	<div class="pagination">
+	  <a href="#">&laquo;</a>
+	  <a href="#"class="active">Home</a>
+	  <a href="sex_ratio.html">Male vs Female Ratio</a>
+	  <a href="ethnic_growth.html">Ethnicity Growth</a>
+	  <a href="age_group.html">Ethnicity vs Age Group</a>
+	  <a href="#">&raquo;</a>
+	</div>
+<div class = "row">
+</div>
+<br/>
+<div class ="rows">
+	<div class = "col-sm-6 sansserif" style="background-color:#eee;">
+	This pages tells the story about the Singapore Population composition. The page can answer a few questions: What is the male to female popualation ratio looks like? What is the total trend of population growth in Singapore? What are different ethnicity lives in Singapore and who are the majority of them? What is the Gender, Age and Ethnicity composition looks like? There are going to be three pages:<br>
+	<br>
+	<b>Males vs Female Population Trend:</b> This page gives information about how the male vs female population growth looks like from 1970 till 2015.<br><br>
+	<b>Ethnicity, Age Group Population Trend:</b> This page gives information about in each Age group how the ethnicity looks like.<br><br>
+	<b>Ethnicity Growth Over Years:</b> This page gives information about different Ethnicity population grow over time from 1970 till 2015.<br>
+	<br>
+	<br>
+	Data values are taken from public data available from Singapore government website <a href="https://data.gov.sg/dataset/">https://data.gov.sg/dataset/</a> 
+	<br>
+	<br>
+	</div>
+
+	<div class = "col-sm-6 sansserif" style="background-color:#eee;">
+	<center><u><b> Rubric Criteria </b></u></center><br>
+	<b>Narrative structure</b> – This interactive visualization uses a drill down story. User can click on each of the points in the plot to see more detailed information Tooltip feature shows information about the male vs female population count and the year when the count is displayed<br>
+	<b>Parameters</b> - Clicks on the home page directs the users to the following pages to drill down more into the information.<br>
+    <b>Triggers</b> – Triggers are implemented using tooltips. When the mouseover event happens in the chart, more information is displayed to the user to understand how the trend looks <br>
+    <b>Scenes</b> – Each scene when clicked on the navigation shows a different prespective from the dataset. One shows about the overall population, then a more detailed illustration of population between different ethnicity groups etc. <br>
+    <b>Annotations</b> – First narration page gives the entire story of this visualization. And then clicks on the navigation bar can take you over to rest of the details in depth <br><br><br>
+	</div>
+</div>
+<div class = "row sansserif">
+</div>
+<br></br>
+<div class = "row sansserif">
+	<b>Conclusion:</b> This visualization tells a story about how the different ethnicity is migrating to Singapore in search of new opportunities or the current population growth is happening over the years. This narration helps to understand that the population is growing steadily for such a small country by land mass. So the government can take measures on providing different opportunities for the Singaporeans to deal with growing economy.
+</div>
+<br>
+<hr>
+<div class="footer">
+	<p class="sansserif">By. Harini MohanaSundaram for Data Visualization Exercise</p>
+</div>
+ </div>
 </body>
 </html>

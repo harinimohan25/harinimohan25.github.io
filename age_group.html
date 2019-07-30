@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Singapore Population Analysis</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+.sansserif {
+	font-family: Verdana, sans-serif;
+}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.rectangle {
+	fill: steelblue;
+}
+.rectangle:hover {
+	fill: orange;
+}
+.axis {
+  font: 10px Verdana;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+  
+}
+
+.footer {
+	background-color: white;
+	font-size: 12px;
+}
+
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+  
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+  
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+</style>
+  
+</head>
+<body>
+<div class = "row sansserif">
+<center><h2 class="sansserif">Singapore Population Analysis</h2></center>
+ </div>
+ <div class="container sansserif">
+	<div class="pagination">
+	  <a href="#">&laquo;</a>
+	  <a href="index.html">Home</a>
+	  <a href="sex_ratio.html">Male vs Female Ratio</a>
+	  <a href="ethnic_growth.html">Ethnicity Growth</a>
+	  <a href="age_group.html"class="active">Ethnicity vs Age Group</a>
+	  <a href="#">&raquo;</a>
+	</div>
+<div class = "row"></div>
+<br/>
+<div class ="rows">
+	<div class = "col-sm-3 sansserif" style="background-color:#eee;">
+	From the years 1970 till 2015, the population growth between Male and Female ratio in Singapore.<br>
+	<br></br>	
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	</div>
+	<div class = "col-sm-9 sansserif" style="background-color:white;" id="ratio">
+	<center><u><b> Male vs Female Population Comparison in Singapore </b></u></center>
+	<br></br>
+	</div>
+</div>
+<div class = "row sansserif">
+</div>
+<br></br>
+<br>
+<hr>
+<div class="footer">
+	<p class="sansserif">By. Harini MohanaSundaram for Data Visualization Exercise</p>
+</div>
+</div>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x0 = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var x1 = d3.scale.ordinal();
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x0)
+    .tickSize(0)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var color = d3.scale.ordinal()
+    .range(["#ca0020","#f4a582","#d5d5d5","#92c5de","#0571b0"]);
+
+var svg = d3.select('body').append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("singapore-residents-by-ethnic-group-and-sex-end-june-annual.csv", function(csv) {
+    
+	csv = csv.filter(function(row) {
+        return row['level_1'] == 'Total Male Residents' || row['level_1'] == 'Total Female Residents';
+    }
+	
+	var ageGroupRange = csv.map(function(d) { return d.level_2; });
+	var ethnicName = csv.map(function(d) { return d.level_1; });
+
+  x0.domain(ageGroupRange);
+  x1.domain(ethnicName).rangeRoundBands([0, x0.rangeBand()]);
+  y.domain([0, d3.max(data, function(categorie) { return d3.max(categorie.values, function(d) { return d.value; }); })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .style('opacity','0')
+      .call(yAxis)
+  .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .style('font-weight','bold')
+      .text("Value");
+
+  svg.select('.y').transition().duration(500).delay(1300).style('opacity','1');
+
+  var slice = svg.selectAll(".slice")
+      .data(data)
+      .enter().append("g")
+      .attr("class", "g")
+      .attr("transform",function(d) { return "translate(" + x0(d.categorie) + ",0)"; });
+
+  slice.selectAll("rect")
+      .data(function(d) { return d.values; })
+  .enter().append("rect")
+      .attr("width", x1.rangeBand())
+      .attr("x", function(d) { return x1(d.rate); })
+      .style("fill", function(d) { return color(d.rate) })
+      .attr("y", function(d) { return y(0); })
+      .attr("height", function(d) { return height - y(0); })
+      .on("mouseover", function(d) {
+          d3.select(this).style("fill", d3.rgb(color(d.rate)).darker(2));
+      })
+      .on("mouseout", function(d) {
+          d3.select(this).style("fill", color(d.rate));
+      });
+
+  slice.selectAll("rect")
+      .transition()
+      .delay(function (d) {return Math.random()*1000;})
+      .duration(1000)
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); });
+
+  //Legend
+  var legend = svg.selectAll(".legend")
+      .data(data[0].values.map(function(d) { return d.rate; }).reverse())
+  .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d,i) { return "translate(0," + i * 20 + ")"; })
+      .style("opacity","0");
+
+  legend.append("rect")
+      .attr("x", width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", function(d) { return color(d); });
+
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) {return d; });
+
+  legend.transition().duration(500).delay(function(d,i){ return 1300 + 100 * i; }).style("opacity","1");
+});
+
+</body>
+</html>
