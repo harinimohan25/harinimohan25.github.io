@@ -175,7 +175,7 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 		.attr("class", "y-axis")
 
 	var z = d3.scaleOrdinal()
-		.range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'])
+		.range(['#0E6655','#808B96','#F0B27A','#283747'])
 		.domain(keys);
 
 	update(d3.select("#year").property("value"), 0)
@@ -241,7 +241,7 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 
 		bars.enter()
 			.append("rect")
-			.attr("width", x.bandwidth() - 15)
+			.attr("width", x.bandwidth())
 			.merge(bars)
 		.transition().duration(speed)
 			.attr("x", d => x(d.data.level_1))
