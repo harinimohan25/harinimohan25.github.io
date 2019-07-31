@@ -98,7 +98,9 @@
 <br/>
 <div class ="rows">
 	<div class = "col-sm-3 sansserif" style="background-color:#eee;">
-	From the years 1970 till 2015, the population growth between Male and Female ratio in Singapore.<br>
+	<br>
+	<b><u>How the age group composition looks?</u></b><br></br>
+	Select different years between 1957 till 2015 to see how the different age group composition among different ethnic group in Singapore looks like. Toggle button can show which are the largest age groups for visual ease.<br>
 	<br></br>	
 	<br></br>
 	<br></br>
@@ -106,10 +108,15 @@
 	<br></br>
 	<br></br>
 	<br></br>
-	<br></br>
 	</div>
-	<div class = "col-sm-9 sansserif" style="background-color:white;" id="ratio">
-	<center><u><b> Male vs Female Population Comparison in Singapore </b></u></center>
+	<div class = "col-sm-9 sansserif" style="background-color:white;" id="age">
+	<center><u><b> Age Group Analysis at Ethnicity Level </b></u></center>
+	Select year: 
+	<select id="year"></select>
+
+	<input type="checkbox" id="sort">	
+	Toggle sort 
+
 	<br></br>
 	</div>
 </div>
@@ -122,122 +129,171 @@
 	<p class="sansserif">By. Harini MohanaSundaram for Data Visualization Exercise</p>
 </div>
 </div>
-<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
 <script>
+d3.csv("singapore-age-ethnicity_pivot.csv").then(d => chart(d))
 
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
+function chart(csv) {
+	var keys = csv.columns.slice(2);
+	var year   = [...new Set(csv.map(d => d.year))]
+	var level_1 = [...new Set(csv.map(d => d.level_1))]
+
+	var options = d3.select("#year")
+					.selectAll("option")
+					.data(year)
+					.enter()
+					.append("option")
+					.text(d => d)
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 30, left: 40},
+    width = 2000 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var x0 = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
+// append the svg object to the body of the page
+	var svg = d3.select("#age")
+				.append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform",
+						  "translate(" + margin.left + "," + margin.top + ")");
 
-var x1 = d3.scale.ordinal();
+	var x = d3.scaleBand()
+		.range([margin.left, width - margin.right])
+		.padding(0.3)
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+	var y = d3.scaleLinear()
+		.rangeRound([height - margin.bottom, margin.top])
 
-var xAxis = d3.svg.axis()
-    .scale(x0)
-    .tickSize(0)
-    .orient("bottom");
+	var xAxis = svg.append("g")
+		.attr("transform", `translate(0,${height - margin.bottom})`)
+		.attr("class", "x-axis")
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
+	var yAxis = svg.append("g")
+		.attr("transform", `translate(${margin.left},0)`)
+		.attr("class", "y-axis")
 
-var color = d3.scale.ordinal()
-    .range(["#ca0020","#f4a582","#d5d5d5","#92c5de","#0571b0"]);
+	var z = d3.scaleOrdinal()
+		.range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'])
+		.domain(keys);
 
-var svg = d3.select('body').append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	update(d3.select("#year").property("value"), 0)
 
-d3.csv("singapore-residents-by-ethnic-group-and-sex-end-june-annual.csv", function(csv) {
-    
-	csv = csv.filter(function(row) {
-        return row['level_1'] == 'Total Male Residents' || row['level_1'] == 'Total Female Residents';
-    }
-	
-	var ageGroupRange = csv.map(function(d) { return d.level_2; });
-	var ethnicName = csv.map(function(d) { return d.level_1; });
+	function update(input, speed) {
 
-  x0.domain(ageGroupRange);
-  x1.domain(ethnicName).rangeRoundBands([0, x0.rangeBand()]);
-  y.domain([0, d3.max(data, function(categorie) { return d3.max(categorie.values, function(d) { return d.value; }); })]);
+		var data = csv.filter(f => f.year == input)
+		console.log(data)
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+		data.forEach(function(d) {
+			d.total = d3.sum(keys, k => +d[k])
+			return d
+		})
+		
+		console.log(data)
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .style('opacity','0')
-      .call(yAxis)
-  .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .style('font-weight','bold')
-      .text("Value");
+		y.domain([0, d3.max(data, d => d3.sum(keys, k => +d[k]))]).nice();
 
-  svg.select('.y').transition().duration(500).delay(1300).style('opacity','1');
+		svg.selectAll(".y-axis")
+			.transition()
+			.duration(speed)
+			.call(d3.axisLeft(y).ticks(null, "s"))
 
-  var slice = svg.selectAll(".slice")
-      .data(data)
-      .enter().append("g")
-      .attr("class", "g")
-      .attr("transform",function(d) { return "translate(" + x0(d.categorie) + ",0)"; });
+		// text label for the y axis
+		svg.append("text")
+			  .attr("transform", "rotate(-90)")
+			  .attr("y",0 - margin.left + 15)
+			  .attr("x",0 - (height / 2))
+			  .attr("dy", "1em")
+			  .style("text-anchor", "middle")
+			  .text("Population Count");
 
-  slice.selectAll("rect")
-      .data(function(d) { return d.values; })
-  .enter().append("rect")
-      .attr("width", x1.rangeBand())
-      .attr("x", function(d) { return x1(d.rate); })
-      .style("fill", function(d) { return color(d.rate) })
-      .attr("y", function(d) { return y(0); })
-      .attr("height", function(d) { return height - y(0); })
-      .on("mouseover", function(d) {
-          d3.select(this).style("fill", d3.rgb(color(d.rate)).darker(2));
-      })
-      .on("mouseout", function(d) {
-          d3.select(this).style("fill", color(d.rate));
-      });
+		data.sort(d3.select("#sort").property("checked")
+			? (a, b) => b.total - a.total
+			: (a, b) => level_1.indexOf(a.level_1) - level_1.indexOf(b.level_1))
 
-  slice.selectAll("rect")
-      .transition()
-      .delay(function (d) {return Math.random()*1000;})
-      .duration(1000)
-      .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); });
+		x.domain(data.map(d => d.level_1));
 
-  //Legend
-  var legend = svg.selectAll(".legend")
-      .data(data[0].values.map(function(d) { return d.rate; }).reverse())
-  .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d,i) { return "translate(0," + i * 20 + ")"; })
-      .style("opacity","0");
+		svg.selectAll(".x-axis").transition().duration(speed)
+			.call(d3.axisBottom(x).tickSizeOuter(0))
 
-  legend.append("rect")
-      .attr("x", width - 18)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", function(d) { return color(d); });
+		svg.append("text")             
+				.attr("transform",
+					  "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 10) + ")")
+			.style("text-anchor", "middle")
+			.text("Different Ethnicity Groups");
 
-  legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9)
-      .attr("dy", ".35em")
-      .style("text-anchor", "end")
-      .text(function(d) {return d; });
 
-  legend.transition().duration(500).delay(function(d,i){ return 1300 + 100 * i; }).style("opacity","1");
-});
+		var group = svg.selectAll("g.layer")
+			.data(d3.stack().keys(keys)(data), d => d.key)
 
+		group.exit().remove()
+
+		group.enter().append("g")
+			.classed("layer", true)
+			.attr("fill", d => z(d.key));
+
+		var bars = svg.selectAll("g.layer").selectAll("rect")
+			.data(d => d, e => e.data.level_1);
+
+		bars.exit().remove()
+
+		bars.enter()
+			.append("rect")
+			.attr("width", x.bandwidth() - 15)
+			.merge(bars)
+		.transition().duration(speed)
+			.attr("x", d => x(d.data.level_1))
+			.attr("y", d => y(d[1]))
+			.attr("height", d => y(d[0]) - y(d[1]))
+
+		var text = svg.selectAll(".text")
+						.data(data, d => d.level_1);
+
+		text.exit().remove()
+
+		text.enter().append("text")
+			.attr("class", "text")
+			.attr("text-anchor", "middle")
+			.merge(text)
+		.transition().duration(speed)
+			.attr("x", d => x(d.level_1) + x.bandwidth() / 2)
+			.attr("y", d => y(d.total) - 5)
+			.text(d => d.total)
+			
+		var legend = text.append("g")
+						.data(data)
+						.attr("class", "legend")
+						.attr("transform", function(d) { var d = d[d.length - 1]; return "translate(" + (x0(d.data.level_1) + x1(d.data.year) + x1.bandwidth()) + "," + ((y(d[0]) + y(d[1])) / 2) + ")"; });
+
+		legend.append("line")
+				.attr("x1", -6)
+				.attr("x2", 6)
+				.attr("stroke", "#000");
+
+		legend.append("text")
+				.attr("x", 9)
+				.attr("dy", "0.35em")
+				.attr("fill", "#000")
+				.style("font", "10px sans-serif")
+				.text(function(d) { return d.key; });
+		
+		
+	}
+
+	var select = d3.select("#year")
+		.on("change", function() {
+			update(this.value, 750)
+		})
+
+	var checkbox = d3.select("#sort")
+		.on("click", function() {
+			update(select.property("value"), 750)
+		})
+		
+
+}
+</script>
 </body>
 </html>

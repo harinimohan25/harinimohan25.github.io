@@ -1,125 +1,125 @@
 ﻿year,level_1,value
-1957,Total Male Residents,762760
-1957,Total Female Residents,683169
-1958,Total Male Residents,797600
-1958,Total Female Residents,721200
-1959,Total Male Residents,830800
-1959,Total Female Residents,756400
-1960,Total Male Residents,859600
-1960,Total Female Residents,786800
-1961,Total Male Residents,886500
-1961,Total Female Residents,815900
-1962,Total Male Residents,909500
-1962,Total Female Residents,840700
-1963,Total Male Residents,929300
-1963,Total Female Residents,865700
-1964,Total Male Residents,951500
-1964,Total Female Residents,890100
-1965,Total Male Residents,973800
-1965,Total Female Residents,913100
-1966,Total Male Residents,995800
-1966,Total Female Residents,938600
-1967,Total Male Residents,1017400
-1967,Total Female Residents,960200
-1968,Total Male Residents,1034100
-1968,Total Female Residents,977900
-1969,Total Male Residents,1046900
-1969,Total Female Residents,995600
-1970,Total Male Residents,1030809
-1970,Total Female Residents,982754
-1971,Total Male Residents,1081200
-1971,Total Female Residents,1031700
-1972,Total Male Residents,1101100
-1972,Total Female Residents,1051300
-1973,Total Male Residents,1121400
-1973,Total Female Residents,1071600
-1974,Total Male Residents,1139700
-1974,Total Female Residents,1090100
-1975,Total Male Residents,1156100
-1975,Total Female Residents,1106500
-1976,Total Male Residents,1171300
-1976,Total Female Residents,1122000
-1977,Total Male Residents,1187300
-1977,Total Female Residents,1138000
-1978,Total Male Residents,1201400
-1978,Total Female Residents,1152200
-1979,Total Male Residents,1216300
-1979,Total Female Residents,1167200
-1980,Total Male Residents,1159011
-1980,Total Female Residents,1123114
-1981,Total Male Residents,1179799
-1981,Total Female Residents,1144604
-1982,Total Male Residents,1200321
-1982,Total Female Residents,1165385
-1983,Total Male Residents,1220471
-1983,Total Female Residents,1185694
-1984,Total Male Residents,1239109
-1984,Total Female Residents,1204596
-1985,Total Male Residents,1258464
-1985,Total Female Residents,1224150
-1986,Total Male Residents,1276522
-1986,Total Female Residents,1242077
-1987,Total Male Residents,1294187
-1987,Total Female Residents,1259676
-1988,Total Male Residents,1316577
-1988,Total Female Residents,1281880
-1989,Total Male Residents,1341275
-1989,Total Female Residents,1306352
-1990,Total Male Residents,1386291
-1990,Total Female Residents,1349577
-1991,Total Male Residents,1414307
-1991,Total Female Residents,1380397
-1992,Total Male Residents,1439063
-1992,Total Female Residents,1410691
-1993,Total Male Residents,1464223
-1993,Total Female Residents,1440324
-1994,Total Male Residents,1489180
-1994,Total Female Residents,1470171
-1995,Total Male Residents,1514015
-1995,Total Female Residents,1499500
-1996,Total Male Residents,1540018
-1996,Total Female Residents,1528113
-1997,Total Male Residents,1565750
-1997,Total Female Residents,1557653
-1998,Total Male Residents,1591816
-1998,Total Female Residents,1588202
-1999,Total Male Residents,1614804
-1999,Total Female Residents,1614877
-2000,Total Male Residents,1634667
-2000,Total Female Residents,1638696
-2001,Total Male Residents,1658558
-2001,Total Female Residents,1667344
-2002,Total Male Residents,1684295
-2002,Total Female Residents,1698649
-2003,Total Male Residents,1673401
-2003,Total Female Residents,1693490
-2004,Total Male Residents,1695031
-2004,Total Female Residents,1718235
-2005,Total Male Residents,1721139
-2005,Total Female Residents,1746675
-2006,Total Male Residents,1748242
-2006,Total Female Residents,1777652
-2007,Total Male Residents,1775477
-2007,Total Female Residents,1807605
-2008,Total Male Residents,1802992
-2008,Total Female Residents,1839667
-2009,Total Male Residents,1844732
-2009,Total Female Residents,1889144
-2010,Total Male Residents,1861133
-2010,Total Female Residents,1910588
-2011,Total Male Residents,1868170
-2011,Total Female Residents,1921081
-2012,Total Male Residents,1880046
-2012,Total Female Residents,1938159
-2013,Total Male Residents,1891504
-2013,Total Female Residents,1953247
-2014,Total Male Residents,1902410
-2014,Total Female Residents,1968329
-2015,Total Male Residents,1916628
-2015,Total Female Residents,1986062
-2016,Total Male Residents,1929526
-2016,Total Female Residents,2004033
-2017,Total Male Residents,1943545
-2017,Total Female Residents,2022251
-2018,Total Male Residents,1955838
-2018,Total Female Residents,2038445
+1957,Male Residents,762760
+1957,Female Residents,683169
+1958,Male Residents,797600
+1958,Female Residents,721200
+1959,Male Residents,830800
+1959,Female Residents,756400
+1960,Male Residents,859600
+1960,Female Residents,786800
+1961,Male Residents,886500
+1961,Female Residents,815900
+1962,Male Residents,909500
+1962,Female Residents,840700
+1963,Male Residents,929300
+1963,Female Residents,865700
+1964,Male Residents,951500
+1964,Female Residents,890100
+1965,Male Residents,973800
+1965,Female Residents,913100
+1966,Male Residents,995800
+1966,Female Residents,938600
+1967,Male Residents,1017400
+1967,Female Residents,960200
+1968,Male Residents,1034100
+1968,Female Residents,977900
+1969,Male Residents,1046900
+1969,Female Residents,995600
+1970,Male Residents,1030809
+1970,Female Residents,982754
+1971,Male Residents,1081200
+1971,Female Residents,1031700
+1972,Male Residents,1101100
+1972,Female Residents,1051300
+1973,Male Residents,1121400
+1973,Female Residents,1071600
+1974,Male Residents,1139700
+1974,Female Residents,1090100
+1975,Male Residents,1156100
+1975,Female Residents,1106500
+1976,Male Residents,1171300
+1976,Female Residents,1122000
+1977,Male Residents,1187300
+1977,Female Residents,1138000
+1978,Male Residents,1201400
+1978,Female Residents,1152200
+1979,Male Residents,1216300
+1979,Female Residents,1167200
+1980,Male Residents,1159011
+1980,Female Residents,1123114
+1981,Male Residents,1179799
+1981,Female Residents,1144604
+1982,Male Residents,1200321
+1982,Female Residents,1165385
+1983,Male Residents,1220471
+1983,Female Residents,1185694
+1984,Male Residents,1239109
+1984,Female Residents,1204596
+1985,Male Residents,1258464
+1985,Female Residents,1224150
+1986,Male Residents,1276522
+1986,Female Residents,1242077
+1987,Male Residents,1294187
+1987,Female Residents,1259676
+1988,Male Residents,1316577
+1988,Female Residents,1281880
+1989,Male Residents,1341275
+1989,Female Residents,1306352
+1990,Male Residents,1386291
+1990,Female Residents,1349577
+1991,Male Residents,1414307
+1991,Female Residents,1380397
+1992,Male Residents,1439063
+1992,Female Residents,1410691
+1993,Male Residents,1464223
+1993,Female Residents,1440324
+1994,Male Residents,1489180
+1994,Female Residents,1470171
+1995,Male Residents,1514015
+1995,Female Residents,1499500
+1996,Male Residents,1540018
+1996,Female Residents,1528113
+1997,Male Residents,1565750
+1997,Female Residents,1557653
+1998,Male Residents,1591816
+1998,Female Residents,1588202
+1999,Male Residents,1614804
+1999,Female Residents,1614877
+2000,Male Residents,1634667
+2000,Female Residents,1638696
+2001,Male Residents,1658558
+2001,Female Residents,1667344
+2002,Male Residents,1684295
+2002,Female Residents,1698649
+2003,Male Residents,1673401
+2003,Female Residents,1693490
+2004,Male Residents,1695031
+2004,Female Residents,1718235
+2005,Male Residents,1721139
+2005,Female Residents,1746675
+2006,Male Residents,1748242
+2006,Female Residents,1777652
+2007,Male Residents,1775477
+2007,Female Residents,1807605
+2008,Male Residents,1802992
+2008,Female Residents,1839667
+2009,Male Residents,1844732
+2009,Female Residents,1889144
+2010,Male Residents,1861133
+2010,Female Residents,1910588
+2011,Male Residents,1868170
+2011,Female Residents,1921081
+2012,Male Residents,1880046
+2012,Female Residents,1938159
+2013,Male Residents,1891504
+2013,Female Residents,1953247
+2014,Male Residents,1902410
+2014,Female Residents,1968329
+2015,Male Residents,1916628
+2015,Female Residents,1986062
+2016,Male Residents,1929526
+2016,Female Residents,2004033
+2017,Male Residents,1943545
+2017,Female Residents,2022251
+2018,Male Residents,1955838
+2018,Female Residents,2038445

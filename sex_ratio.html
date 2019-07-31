@@ -78,6 +78,12 @@
   fill: none;
   stroke: steelblue;
 }
+
+.legend {
+    font-size: 16px;
+    font-weight: bold;
+    text-anchor: middle;
+} 
 </style>
   
 </head>
@@ -98,15 +104,15 @@
 <br/>
 <div class ="rows">
 	<div class = "col-sm-3 sansserif" style="background-color:#eee;">
-	From the years 1970 till 2015, the population growth between Male and Female ratio in Singapore.<br>
+	</br>
+	<b><u>Are there more women now?</u></b><br></br>
+	From the years 1970 till 2015, the population growth between Male and Female ratio in Singapore is shown here. As you can see from the year 2000, the population kind of changed and female population became more than the male population.<br>
 	<br></br>	
 	<br></br>
 	<br></br>
 	<br></br>
 	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
+	<br>
 	</div>
 	<div class = "col-sm-9 sansserif" style="background-color:white;" id="ratio">
 	<center><u><b>Male vs Female Population Comparison in Singapore</b></u></center>
@@ -127,7 +133,7 @@
 <script>
 // set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = 700 - margin.left - margin.right,
+    width = 900 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
@@ -152,24 +158,42 @@ d3.csv("singapore-sex-ratio.csv", function(data) {
   // Add X axis --> it is a date format
   var x = d3.scaleLinear()
     .domain(d3.extent(data, function(d) { return d.year; }))
-    .range([ 0, width ]);
+    .range([margin.left, width - margin.right]);
+	
   svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).ticks(10));
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x).ticks(15).tickFormat(d3.format('.4')));
+  
+  svg.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text("Year Recorded");
 
   // Add Y axis
   var y = d3.scaleLinear()
     .domain([0, d3.max(data, function(d) { return +d.value; })])
-    .range([ height, 0 ]);
+    .rangeRound([height - margin.bottom, margin.top])
 	
   svg.append("g")
-    .call(d3.axisLeft(y));
+     .attr("transform", `translate(${margin.left},0)`)
+     .call(d3.axisLeft(y).tickFormat(d3.format(".2s")));
 
+  // text label for the y axis
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left - 5)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Population Count");
+	  
   // color palette
   var res = allGroup.map(function(d){ return d.key }) // list of group names
   var color = d3.scaleOrdinal()
     .domain(res)
-    .range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'])
+    .range(['#B22222','#191970'])
 
   // Draw the line
   svg.selectAll(".line")
@@ -178,13 +202,40 @@ d3.csv("singapore-sex-ratio.csv", function(data) {
       .append("path")
         .attr("fill", "none")
         .attr("stroke", function(d){ return color(d.key) })
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 4)
         .attr("d", function(d){
           return d3.line()
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(+d.value); })
             (d.values)
         })
+		
+	legendSpace = width/allGroup.length;
+
+	allGroup.forEach(function(d,i) {                          
+
+        // Add the Legend
+        svg.append("text")                                    
+            .attr("x", (legendSpace/2)+i*legendSpace) 
+            .attr("y", height + (margin.bottom/2)+ 5)         
+            .attr("class", "legend")    
+            .style("fill", function() { 
+                return d.color = color(d.key); })             
+            .text(d.key);                                     
+
+    });	
+  
+	svg.selectAll("g.dot")
+		.data(allGroup)
+		.enter().append("g")
+		.attr("class", "dot")
+		.selectAll("circle")
+		.data(Object) 
+		.enter()
+		.append("circle")
+			.attr("r", 5)
+			.attr("cx", function(d,i) {  return x(i); })
+			.attr("cy", function(d,i) { return y(d.value); })
   
 	const tooltip = d3.select('#tooltip');
 	const tooltipLine = svg.append('line');
@@ -195,32 +246,34 @@ d3.csv("singapore-sex-ratio.csv", function(data) {
 	}
 
 	function drawTooltip() {
-		const year = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
- 
-		tooltipLine.attr('stroke', 'black')
-		.attr('x1', x(year))
-		.attr('x2', x(year))
-		.attr('y1', 0)
-		.attr('y2', height);
+		const year = Math.floor((x.invert(d3.mouse(tipBox.node())[0])));
+		
+		tooltipLine.attr('stroke', 'coral')
+					.attr('x1', x(year))
+					.attr('x2', x(year))
+					.attr('y1', 0)
+					.attr('y2', height);
   
-	  tooltip.html(year)
-		.style('display', 'block')
-		.style('left', d3.event.pageX + 20)
-		.style('top', d3.event.pageY - 20)
-		.selectAll()
-		.data(allGroup)
-		.enter()
-		.append('div')
-		.style('color', d => color(d.key))
-		.html(d => d.level_1 + ': ' + d.value);
+		tooltip.html("<b>Year: " + year + "</b>")
+				.style('display', 'block')
+				.style('left', (d3.event.pageX))
+				.style('top', (d3.event.pageY))
+				.selectAll()
+				.data(allGroup)
+				.enter()
+				.append('div')
+				.style('color', d => color(d.key))
+				.html(d => "<b>" + d.key + ': </b>' + d.values.find(h => h.year == year).value);
 	}
  
    tipBox = svg.append('rect')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('opacity', 0)
-    .on('mousemove', drawTooltip)
-    .on('mouseout', removeTooltip);
+				.attr('width', width)
+				.attr('height', height)
+				.attr('opacity', 0)
+				.on('mousemove', drawTooltip)
+				.on('mouseout', removeTooltip);
+			
+	 
 })
 
 
