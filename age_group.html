@@ -69,14 +69,17 @@
   pointer-events: all;
 }
 
-.dot {
-    fill: #ffab00;
-    stroke: #fff;
-}
-  
-.focus circle {
-  fill: none;
-  stroke: steelblue;
+div.d3-tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
 }
 </style>
   
@@ -88,27 +91,22 @@
  </div>
  <div class="container sansserif">
 	<div class="pagination">
-	  <a href="#">&laquo;</a>
 	  <a href="index.html">Home</a>
-	  <a href="sex_ratio.html">Male vs Female Ratio</a>
+	  <a href="sex_ratio.html">Male vs Female Growth</a>
 	  <a href="ethnic_growth.html">Ethnicity Growth</a>
 	  <a href="age_group.html"class="active">Ethnicity vs Age Group</a>
-	  <a href="#">&raquo;</a>
 	</div>
 <div class = "row"></div>
 <br/>
 <div class ="rows">
 	<div class = "col-sm-3 sansserif" style="background-color:#eee;">
 	<br>
-	<b><u>How the age group composition looks?</u></b><br></br>
-	Select different years between 1957 till 2015 to see how the different age group composition among different ethnic group in Singapore looks like. Toggle button can show which are the largest age groups for visual ease.<br>
-	<br></br>	
+	<b><u>How the age group composition looks?</u></b>
 	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
+	From 1957 and forward, as you can see the number of births are very high between all different age groups. During 2000 and above, the growth has considerably reduced. Does this imply majority of the population are comfortable without kids? Are the economy changing so much that people are not able to afford giving birth? Or the planned parenthood is so efficient that all accidental births are avoided? Need more research in this area to really understand why the population growth has reversed across decades. 
+	<br><br>
+	<b>PS:</b> Select different years between 1957 till 2018 to see how the different age group composition among different ethnic group in Singapore looks like. Toggle button can show which are the largest age groups for visual ease. Scroll to the side to see the legend.<br>
+	<br>
 	</div>
 	<div class = "col-sm-9 sansserif" style="background-color:white;" id="age">
 	<center><u><b> Age Group Analysis at Ethnicity Level </b></u></center>
@@ -118,13 +116,11 @@
 	<input type="checkbox" id="sort">	
 	Toggle sort 
 
-	<div id='tooltip' style='position:absolute;background-color:lightgray;padding:0px'></div>
 	<br></br>
 	</div>
 </div>
 <div class = "row sansserif">
 </div>
-<br>
 <hr>
 <div class="footer">
 	<p class="sansserif">By. Harini MohanaSundaram for Data Visualization Exercise</p>
@@ -180,6 +176,9 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 
 	update(d3.select("#year").property("value"), 0)
 
+	var tip = d3.select(".d3-tooltip")
+				.style("visibility", "hidden") ;
+	
 	function update(input, speed) {
 
 		var data = csv.filter(f => f.year == input)
@@ -224,7 +223,6 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 			.style("text-anchor", "middle")
 			.text("Different Ethnicity Groups");
 
-
 		var group = svg.selectAll("g.layer")
 			.data(d3.stack().keys(keys)(data), d => d.key)
 
@@ -232,10 +230,11 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 
 		group.enter().append("g")
 			.classed("layer", true)
-			.attr("fill", d => z(d.key));
+			.attr("fill", d => z(d.key))
 
-		var bars = svg.selectAll("g.layer").selectAll("rect")
-			.data(d => d, e => e.data.level_1);
+		var bars = svg.selectAll("g.layer")
+						.selectAll("rect")
+						.data(d => d, e => e.data.level_1);
 
 		bars.exit().remove()
 
@@ -243,13 +242,20 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 			.append("rect")
 			.attr("width", x.bandwidth())
 			.merge(bars)
+			.on("mouseover", function(d){
+				tip.html("<p>" + d.key + "</p>")
+				.style("left", (d3.event.pageX) + "px")
+				.style("top", (d3.event.pageY) + "px")
+					.style("visibility", "visible")
+			})
+			.on("mouseout", function(d){ tip.style("visibility", "hidden") })
 		.transition().duration(speed)
 			.attr("x", d => x(d.data.level_1))
 			.attr("y", d => y(d[1]))
 			.attr("height", d => y(d[0]) - y(d[1]))
 
 		var text = svg.selectAll(".text")
-						.data(data, d => d.level_1);
+						.data(data, d => d.level_1)
 
 		text.exit().remove()
 
@@ -262,23 +268,28 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 			.attr("y", d => y(d.total) - 5)
 			.text(d => d.total)
 			
-		var legend = text.append("g")
-						.data(data)
-						.attr("class", "legend")
-						.attr("transform", function(d) { var d = d[d.length - 1]; return "translate(" + (x0(d.data.level_1) + x1(d.data.year) + x1.bandwidth()) + "," + ((y(d[0]) + y(d[1])) / 2) + ")"; });
+		var legend = svg.append("g")
+			.attr("font-family", "verdana")
+			.attr("font-size", 10)
+			.attr("text-anchor", "end")
+			.selectAll("g")
+			.data(keys.slice().reverse())
+			.enter()
+			.append("g")
+			.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-		legend.append("line")
-				.attr("x1", -6)
-				.attr("x2", 6)
-				.attr("stroke", "#000");
+		legend.append("rect")
+			.attr("x", width - 19)
+			.attr("width", 19)
+			.attr("height", 19)
+			.attr("fill", z);
 
 		legend.append("text")
-				.attr("x", 9)
-				.attr("dy", "0.35em")
-				.attr("fill", "#000")
-				.style("font", "10px sans-serif")
-				.text(function(d) { return d.key; });
-		
+			.attr("x", width - 24)
+			.attr("y", 9.5)
+			.attr("dy", "0.32em")
+			.text(function(d) { return d; });	
+			
 	}
 
 	var select = d3.select("#year")
@@ -291,7 +302,7 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 			update(select.property("value"), 750)
 		})
 
-		
+
 
 }
 </script>

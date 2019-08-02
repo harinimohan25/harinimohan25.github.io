@@ -64,21 +64,6 @@
     stroke-width: 3;
 }
   
-.overlay {
-  fill: none;
-  pointer-events: all;
-}
-
-.dot {
-    fill: #ffab00;
-    stroke: #fff;
-}
-  
-.focus circle {
-  fill: none;
-  stroke: steelblue;
-}
-
 .legend {
     font-size: 16px;
     font-weight: bold;
@@ -94,12 +79,10 @@
  </div>
  <div class="container sansserif">
 	<div class="pagination">
-	  <a href="#">&laquo;</a>
 	  <a href="index.html">Home</a>
-	  <a href="sex_ratio.html"class="active">Male vs Female Ratio</a>
+	  <a href="sex_ratio.html"class="active">Male vs Female Growth</a>
 	  <a href="ethnic_growth.html">Ethnicity Growth</a>
 	  <a href="age_group.html">Ethnicity vs Age Group</a>
-	  <a href="#">&raquo;</a>
 	</div>
 <div class = "row"></div>
 <br/>
@@ -107,13 +90,11 @@
 	<div class = "col-sm-3 sansserif" style="background-color:#eee;">
 	</br>
 	<b><u>Are there more women now?</u></b><br></br>
-	From the years 1970 till 2015, the population growth between Male and Female ratio in Singapore is shown here. As you can see from the year 2000, the population kind of changed and female population became more than the male population.<br>
+	From the years 1970 till 2018, the population growth between Male and Female ratio in Singapore is shown here. As you can see from the year 2000, the population kind of changed and female population became more than the male population.<br><br>
+	<i>Did you observe the growth has changed between male and female birth rates from the year 2000 and above. Now women are in the lead. </i><br><br>
+	<b>PS:</b> Hover over the chart to see the population count between male and female.</b>
 	<br></br>	
 	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br>
 	</div>
 	<div class = "col-sm-9 sansserif" style="background-color:white;" id="ratio">
 	<center><u><b>Male vs Female Population Comparison in Singapore</b></u></center>
@@ -122,7 +103,6 @@
 </div>
 <div class = "row sansserif">
 </div>
-<br>
 <hr>
 <div class="footer">
 	<p class="sansserif">By. Harini MohanaSundaram for Data Visualization Exercise</p>
@@ -161,7 +141,7 @@ d3.csv("singapore-sex-ratio.csv", function(data) {
   svg.append("text")             
       .attr("transform",
             "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 20) + ")")
+                           (height + margin.top + 10) + ")")
       .style("text-anchor", "middle")
       .text("Year Recorded");
 
@@ -194,15 +174,14 @@ d3.csv("singapore-sex-ratio.csv", function(data) {
         .attr("stroke", function(d){ return color(d.key) })
         .attr("stroke-width", 4)
 		.transition()
-		.duration(3000)
-		.delay(1000)
+		.duration(500)
+		.delay(500)
         .attr("d", function(d){
           return d3.line()
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(+d.value); })
             (d.values)
         })
-		
 		
 	legendSpace = width/allGroup.length;
 
@@ -211,25 +190,13 @@ d3.csv("singapore-sex-ratio.csv", function(data) {
         // Add the Legend
         svg.append("text")                                    
             .attr("x", (legendSpace/2)+i*legendSpace) 
-            .attr("y", height + (margin.bottom/2)+ 5)         
+            .attr("y", height + (margin.bottom/2) + 15)         
             .attr("class", "legend")    
             .style("fill", function() { 
                 return d.color = color(d.key); })             
             .text(d.key);                                     
 
     });	
-  
-	svg.selectAll("g.dot")
-		.data(allGroup)
-		.enter().append("g")
-		.attr("class", "dot")
-		.selectAll("circle")
-		.data(Object) 
-		.enter()
-		.append("circle")
-			.attr("r", 5)
-			.attr("cx", function(d,i) {  return x(i); })
-			.attr("cy", function(d,i) { return y(d.value); })
   
 	const tooltip = d3.select('#tooltip');
 	const tooltipLine = svg.append('line');

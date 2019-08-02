@@ -94,12 +94,10 @@
  </div>
  <div class="container sansserif">
 	<div class="pagination">
-	  <a href="#">&laquo;</a>
 	  <a href="index.html">Home</a>
-	  <a href="sex_ratio.html">Male vs Female Ratio</a>
+	  <a href="sex_ratio.html">Male vs Female Growth</a>
 	  <a href="ethnic_growth.html"class="active">Ethnicity Growth</a>
 	  <a href="age_group.html">Ethnicity vs Age Group</a>
-	  <a href="#">&raquo;</a>
 	</div>
 <div class = "row"></div>
 <br/>
@@ -107,10 +105,11 @@
 	<div class = "col-sm-3 sansserif" style="background-color:#eee;">
 	<br>
 	<b><u>What are the different ethnic groups in Singapore?</u></b><br></br>
-	From the years 1970 till 2015, how the concentration or population growth looks between different ethnic groups are shown here. There is a steep growth in Chinese population. Malays and Indian population are growing as well. But the other ethnic group population kind of not seeing much growth. Should the government has to take measures to support immigration from other nationalities like Ceylon etc.?<br>
+	From the years 1970 till 2018, how the concentration or population growth looks between different ethnic groups are shown here. There is a steep growth in Chinese population. Malays and Indian population are growing as well. But the other ethnic group population kind of not seeing much growth. Should the government has to take measures to support immigration from other nationalities like Ceylon etc.?<br>
+	<i>Did you observe the growth for china, india and malay population. They are in a steady growth rate in the country?</i><br><br>
+	<b>PS:</b> Hover over the chart to see the population count between all different ethnic groups at any point of time.</b>
 	<br></br>	
-	<br></br>
-	<br></br>
+	<br>
 	</div>
 	<div class = "col-sm-9 sansserif" style="background-color:white;" id="ratio">
 	<center><u><b>Ethnic Growth Comparison in Singapore</b></u></center>
@@ -160,7 +159,7 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
   svg.append("text")             
       .attr("transform",
             "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 20) + ")")
+                           (height + margin.top + 5) + ")")
       .style("text-anchor", "middle")
       .text("Year Recorded");
 
@@ -174,7 +173,7 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
 
   svg.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left + 15)
+      .attr("y", 0 - margin.left + 25)
       .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
@@ -193,8 +192,8 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
         .attr("stroke", function(d){ return color(d.key) })
         .attr("stroke-width", 4)
 		.transition()
-		.duration(3000)
-		.delay(1000)
+		.duration(500)
+		.delay(500)
         .attr("d", function(d){
           return d3.line()
             .x(function(d) { return x(d.year); })
@@ -207,8 +206,8 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
 	allGroup.forEach(function(d,i) {                          
         // Add the Legend
         svg.append("text")                                    
-            .attr("x", (legendSpace/6)+i*legendSpace) 
-            .attr("y", height + (margin.bottom/2))         
+            .attr("x", (legendSpace/2)+i*legendSpace) 
+            .attr("y", height + (margin.bottom/2) + 15)       
             .attr("class", "legend")    
             .style("fill", function() { 
                 return d.color = color(d.key); })             

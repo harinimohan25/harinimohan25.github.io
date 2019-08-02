@@ -72,16 +72,13 @@
  </div>
    <div class="container sansserif">
 	<div class="pagination">
-	  <a href="#">&laquo;</a>
 	  <a href="#"class="active">Home</a>
-	  <a href="sex_ratio.html">Male vs Female Ratio</a>
+	  <a href="sex_ratio.html">Male vs Female Growth</a>
 	  <a href="ethnic_growth.html">Ethnicity Growth</a>
 	  <a href="age_group.html">Ethnicity vs Age Group</a>
-	  <a href="#">&raquo;</a>
 	</div>
 <div class = "row">
 </div>
-<br/>
 <div class ="rows">
 	<div class = "col-sm-6 sansserif" style="background-color:#eee;">
 	<br>
@@ -95,25 +92,27 @@
 	Data values are taken from public data available from Singapore government website <a href="https://data.gov.sg/dataset/">https://data.gov.sg/dataset/</a> 
 	<br>
 	<br>
+	<b>Conclusion:</b> 
+	<br><br>
+	This visualization tells the story about how much population are present in Singapore as well as how the population concentration across different ethnicity groups. <br>
+	- If we see the different ethnicity group and their population growth between the 2nd and 3rd scenes, there is a very steady increase in chinese, indians and malay population. However the other ethnic groups like ceylons etc are actually stays the same. Is the Crazy rich asians movie is true then? Everything is owned in Singapore by chinese? 
+	<br>
+	<br>
+	- Also when we take a peek at the Age group vs Ethnicity groups, in 1957 and forward, there is a very good growth of population, 0-4 year aged groups shows a very good growth. However in 2015 and forward, the growth has gone down. birth rate doesnt seem to be the same as old days. Does nobody wants kids anymore? or is there a birth deficiency in the country due to habitual cause?
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 	</div>
-
 	<div class = "col-sm-6 sansserif" style="background-color:#eee;">
 	<br>
-	<center><u><b> Rubric Criteria </b></u></center><br>
-	<b>Narrative structure</b> – This interactive visualization uses a drill down story. User can click on each of the points in the plot to see more detailed information Tooltip feature shows information about the male vs female population count and the year when the count is displayed<br>
-	<b>Parameters</b> - Clicks on the home page directs the users to the following pages to drill down more into the information.<br>
-    <b>Triggers</b> – Triggers are implemented using tooltips. When the mouseover event happens in the chart, more information is displayed to the user to understand how the trend looks <br>
-    <b>Scenes</b> – Each scene when clicked on the navigation shows a different prespective from the dataset. One shows about the overall population, then a more detailed illustration of population between different ethnicity groups etc. <br>
-    <b>Annotations</b> – First narration page gives the entire story of this visualization. And then clicks on the navigation bar can take you over to rest of the details in depth <br><br><br>
+	<center><u><b> Visualization Pointers </b></u></center><br>
+	<b>Narrative structure</b> – The narration follows an interactive slide show. There are 4 different slides that are present in the narration. Each slide can be viewed by clicking the names of the slides on the navigation bar. Male vs Female Growth, Ethnicity Growth has some free form exploration like tool tips on the line charts. Ethnicity vs Age Group has the year and toggle switch to see different years and how the age group vs ethnicity looks like. You can toggle to sort the data which tells age group that has the highest population in that year.<br>
+	<b>Parameters</b> - Different parameters are present in the narrative visualization. Hovering over the different scene names also makes the links turn into gray option which enables the user to understand that they can be clicked. All the slides show the charts with a transition and delay so that immediately when the user has arrived at the scene, the chart kind of blinks up to catch user’s attention. In the Age vs Ethnicity page, the year can be changed and that provides an ability to change the state of the page to show only certain details to the user.<br>
+    <b>Triggers</b> – Couple of triggers are available in each of the scenes.  In the Sex Ratio and Ethnicity Growth pages: Hovering the mouse over the line charts, triggers tooltips to show details like the population actual counts between the different groups displayed in the chart. In the Age vs Ethnicity page, there are couple of options available. Like you can choose between different years in the drop-down list box to see how the age group flared between years for each of the ethnicity group. Also, there is a toggle check box, that can be used to sort the order of the bars so that the highest is displayed to understand how the growth rate is impacted each year <br>
+    <b>Scenes</b> – The scenes are ordered from the overall view to a much-detailed view in the end. First page which is called as the home page showcases what are the three different scenes that present. And also provides some information about the inferences that has been arrived. The first scene gives an overall population count between a generic metric like male vs female population. 2nd and 3rd scene of the narration is more of a detailed depth about the different ethnicity groups that are present in Singapore and two different data points for the same is shown in relation to the population count. 2nd scene only shows out of these male vs female population, what are the different ethnicity groups are present in Singapore. 3rd scene shows the different age group within that ethnicity as well as across years how the transition has happened in all the 3 scenes. All the scenes use year as a base dimension. Everything is shown as a trend over the years and how the growth looks over years.<br>
+    <b>Annotations</b> – Annotations are provided for each scene depending on what information is shown in the page. Home page has provided an overall information about the pages that are about to follow. Male vs Female Growth and Ethnicity Growth pages uses tooltips to show the actual population count over years from 1957 to 2018. Annotation change within a scene. Once they are shown when the mouse is hovered over and the annotations are removed when the mouse is out of the SVG. Ethnicity vs Age Group page shows the total population value on top of the bars for each age group. It changes for every year when its selected from the list drop down option. <br><br><br>
 	</div>
 </div>
 <div class = "row sansserif">
 </div>
-<br></br>
-<div class = "row sansserif">
-	<b>Conclusion:</b> This visualization tells a story about how the different ethnicity is migrating to Singapore in search of new opportunities or the current population growth is happening over the years. This narration helps to understand that the population is growing steadily for such a small country by land mass. So the government can take measures on providing different opportunities for the Singaporeans to deal with growing economy.
-</div>
-<br>
 <hr>
 <div class="footer">
 	<p class="sansserif">By. Harini MohanaSundaram for Data Visualization Exercise</p>
