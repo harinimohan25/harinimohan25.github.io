@@ -118,6 +118,7 @@
 	<input type="checkbox" id="sort">	
 	Toggle sort 
 
+	<div id='tooltip' style='position:absolute;background-color:lightgray;padding:0px'></div>
 	<br></br>
 	</div>
 </div>
@@ -141,16 +142,15 @@ function chart(csv) {
 	var options = d3.select("#year")
 					.selectAll("option")
 					.data(year)
+					//.descending(d => d)
 					.enter()
 					.append("option")
 					.text(d => d)
 
-// set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 40},
     width = 1400 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
 	var svg = d3.select("#age")
 				.append("svg")
 					.attr("width", width + margin.left + margin.right)
@@ -175,7 +175,7 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 		.attr("class", "y-axis")
 
 	var z = d3.scaleOrdinal()
-		.range(['#0E6655','#808B96','#F0B27A','#283747'])
+		.range(['#0E6655','#808B96','coral','#283747'])
 		.domain(keys);
 
 	update(d3.select("#year").property("value"), 0)
@@ -279,7 +279,6 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 				.style("font", "10px sans-serif")
 				.text(function(d) { return d.key; });
 		
-		
 	}
 
 	var select = d3.select("#year")
@@ -291,6 +290,7 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 		.on("click", function() {
 			update(select.property("value"), 750)
 		})
+
 		
 
 }

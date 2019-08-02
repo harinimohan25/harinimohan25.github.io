@@ -114,7 +114,7 @@
 	</div>
 	<div class = "col-sm-9 sansserif" style="background-color:white;" id="ratio">
 	<center><u><b>Ethnic Growth Comparison in Singapore</b></u></center>
-	<div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>
+	<div id='tooltip' style='position:absolute;background-color:lightgray;padding:0px'></div>
 	</div>
 </div>
 <div class = "row sansserif">
@@ -128,12 +128,10 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script>
-// set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 60},
     width = 900 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
 var svg = d3.select("#ratio")
   .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -142,7 +140,6 @@ var svg = d3.select("#ratio")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-//Read the data
 d3.csv("singapore-ethnic-growth.csv", function(data) {
 
 	bisectDate = d3.bisector(function(d) { return d.year; }).left;
@@ -152,7 +149,6 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
 	
 	console.log(allGroup)
 	
-  // Add X axis --> it is a date format
   var x = d3.scaleLinear()
     .domain(d3.extent(data, function(d) { return d.year; }))
     .range([margin.left, width - margin.right]);
@@ -168,7 +164,6 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
       .style("text-anchor", "middle")
       .text("Year Recorded");
 
-  // Add Y axis
   var y = d3.scaleLinear()
     .domain([0, d3.max(data, function(d) { return +d.value; })]).nice()
     .rangeRound([height - margin.bottom, margin.top])
@@ -177,7 +172,6 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
      .attr("transform", `translate(${margin.left},0)`)
      .call(d3.axisLeft(y).tickFormat(d3.format(".2s")));
 
-  // text label for the y axis
   svg.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - margin.left + 15)
@@ -186,13 +180,11 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
       .style("text-anchor", "middle")
       .text("Population Count");
 	  
-  // color palette
   var res = allGroup.map(function(d){ return d.key }) // list of group names
   var color = d3.scaleOrdinal()
     .domain(res)
-    .range(['#C71585','#2E8B57','#9370DB','#DC143C'])
+    .range(['#0E6655','#808B96','coral','#283747'])
   
-  // Draw the line
   svg.selectAll(".line")
       .data(allGroup)
       .enter()
@@ -200,6 +192,9 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
         .attr("fill", "none")
         .attr("stroke", function(d){ return color(d.key) })
         .attr("stroke-width", 4)
+		.transition()
+		.duration(3000)
+		.delay(1000)
         .attr("d", function(d){
           return d3.line()
             .x(function(d) { return x(d.year); })
@@ -251,8 +246,8 @@ d3.csv("singapore-ethnic-growth.csv", function(data) {
   
 		tooltip.html("<b>Year: " + year + "</b>")
 				.style('display', 'block')
-				.style('left', (d3.event.pageX))
-				.style('top', (d3.event.pageY))
+			   .style("left", (d3.event.pageX - 750) + "px")
+			   .style("top", (d3.event.pageY - 300) + "px")
 				.selectAll()
 				.data(allGroup)
 				.enter()
